@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+
+# Node
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+
+# QA artifacts produced in target repositories
+qa/
+*.har
+*.webm
+auth-state.json
+.env
+.env.*
+!.env.example
+
+# Local smoke-test artifacts
+scripts/.artifacts/
