@@ -146,7 +146,7 @@ Ele usa o plugin manager, adiciona o bundle ao perfil e ativa o preset. Depois, 
 
 ### 4. Crie o Bot QA (DS Bot)
 
-Siga [`bot/qa-bot.md`](bot/qa-bot.md): nome, papel, instruções, pasta de trabalho, permissão e computer-use. São quatro campos no painel do DS Bot.
+Siga [`bot/qa-bot.md`](bot/qa-bot.md) e preencha os campos no painel do DS Bot: nome, papel, instruções, pasta de trabalho, permissão e computer-use.
 
 ## Uso
 
