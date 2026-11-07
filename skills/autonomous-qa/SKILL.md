@@ -18,6 +18,10 @@ Todos os artefatos vão para a raiz do repositório do app, em `qa/`.
 5. **Não vaze.** Credenciais, cookies e dados pessoais ficam fora do relatório e da evidência.
 6. **Não declare 100%.** Liste o que não foi testado e o risco residual.
 7. **Diff mínimo.** Corrija a causa raiz sem refatorar o que não faz parte do bug.
+8. **Controle visível tem contrato.** Botão, link, caret ou select que não produz efeito
+   observável é bug — não "detalhe de UI".
+9. **O clique do usuário é o oráculo final.** Todo caso que o usuário encontrou vira fixture e
+   teste no mesmo dia; se ele achou, a matriz de cobertura estava incompleta.
 
 ## Fase 0 — Contrato
 
@@ -73,6 +77,47 @@ Para estados de erro, use `route` (abortar ou devolver 500) apenas em ambiente d
 
 Cubra: navegação, formulários, filtros, busca, modais, tabelas, paginação, empty states, loading, sucesso, erro, validação, limites, permissões, responsivo e acessibilidade (`a11y`).
 
+## Fase 3.5 — Inventário de controles (obrigatória)
+
+**Todo controle visível tem que provar efeito.** Botão, link, select, checkbox, caret e item de
+linha clicável: cada um precisa produzir algo observável — mudança de URL, request de rede, mudança
+no DOM, toast, ou um estado novo na tela. **Efeito zero é bug**, com a mesma severidade de um número
+errado.
+
+Como fazer, por tela **e por estado**:
+
+1. `snapshot -i` e liste cada elemento interativo (o snapshot já traz os `@eN`).
+2. Para cada um: registre URL + um trecho do DOM + a contagem de requests antes; clique; compare.
+3. Se nada mudou em nenhum dos três, é candidato a bug — confirme clicando de novo e olhando o
+   console/rede (às vezes a ação falha silenciosamente).
+4. Registre o inventário em `qa/controls.md`: tela, estado, controle, efeito esperado, efeito obtido.
+
+**O erro clássico que isso pega:** o controle que só existe em um estado (lista com 2+ itens,
+tabela vazia, motor offline) e o teste anterior usou uma fixture com 1 item — o controle nem
+apareceu, e o QA "passou". Por isso a fase 2 (plano) precisa declarar os **estados**, e a fixture
+precisa reproduzir cada um.
+
+**Navegação interna, não só deep link.** Um link profundo testado abrindo a URL em aba nova passa
+mesmo quando o clique de dentro da aplicação não faz nada (efeito preso no *mount*, dependência
+faltando). Teste os dois caminhos: abrir a URL e clicar a partir da tela anterior.
+
+## Fase 3.6 — O artefato que o usuário usa
+
+Testar a árvore de trabalho não prova o que o usuário roda. Quando existir build/instalador:
+
+1. rode o **artefato** (exe/app empacotado), não só o servidor de dev;
+2. confirme a **versão** na tela ou em `/health` e **inclua a versão no relatório e no print**;
+3. confirme que o bundle empacotado é o mesmo que você testou (compare hash de `dist/assets`).
+
+Sem isso, o QA pode aprovar uma árvore que nunca chega ao usuário — e reprovar um artefato que
+não é o que ele usa.
+
+## Fase 2.1 — Fixture de estados, não de dados
+
+Antes de testar, liste os **estados** que mudam a tela e crie fixture para cada um: lista vazia,
+um item, vários itens, item sem comentário, item já revisado, motor desligado, erro de rede,
+carregando. Dado sintético é o veículo; o que o QA precisa cobrir é o **estado**.
+
 ## Fase 4 — Backend/API
 
 Não assuma que a UI funcionando prova o backend.
@@ -93,6 +138,7 @@ Atualize `qa/BUGS.md` continuamente (modelo em `references/bug-report.md`):
 - Evidência em `qa/evidence/<BUG-ID>/`.
 - Causa provável (confirmada ou hipótese) e arquivos.
 - Agrupe por causa raiz; evite duplicatas.
+- Anexe o **`qa/controls.md`** (inventário da Fase 3.5): controle, estado, efeito esperado × obtido.
 - Separe **confirmado** de **hipótese**.
 
 Inclua no topo: ambiente, data, cobertura testada e a lista do que **não** foi testado.
