@@ -52,6 +52,10 @@ Liste os fluxos prioritários e, para cada um, os cenários: positivo, negativo,
 
 Saída: `qa/plan.md`. Peça aprovação se o escopo for grande.
 
+## Fase 2.1 — Fixture de estados, não de dados
+
+Liste os **estados** que mudam a tela e crie fixture para cada: lista vazia, um item, vários itens, item sem comentário, item já revisado, motor desligado, erro de rede, carregando. Dado sintético é o veículo; o que o QA precisa cobrir é o **estado** — e é o estado que esconde o controle (ver Fase 3.5).
+
 ## Fase 3 — Exploratório (frontend)
 
 No DSH Web **não existe `read_browser`**: use o `agent-browser` pelo shell. Antes do primeiro comando:
@@ -112,12 +116,6 @@ Testar a árvore de trabalho não prova o que o usuário roda. Quando existir bu
 Sem isso, o QA pode aprovar uma árvore que nunca chega ao usuário — e reprovar um artefato que
 não é o que ele usa.
 
-## Fase 2.1 — Fixture de estados, não de dados
-
-Antes de testar, liste os **estados** que mudam a tela e crie fixture para cada um: lista vazia,
-um item, vários itens, item sem comentário, item já revisado, motor desligado, erro de rede,
-carregando. Dado sintético é o veículo; o que o QA precisa cobrir é o **estado**.
-
 ## Fase 4 — Backend/API
 
 Não assuma que a UI funcionando prova o backend.
@@ -162,6 +160,10 @@ Quando o cenário for importante, transforme em teste no repositório: use o fra
 
 ## Referências
 
-- `references/briefing.md` — ordem de leitura e modelo do briefing.
-- `references/bug-report.md` — template, severidade, status e evidência.
-- `references/recon.md` — checklist por stack.
+Os três arquivos vivem ao lado deste SKILL.md, em `references/`. Quando a skill é usada como
+*capability* (DS Bot), o texto dela não leva os anexos — leia pelo caminho do projeto:
+`C:\__PROJETOS__\voicemap\.dsh\skills\autonomous-qa\references\`.
+
+- `briefing.md` — ordem de leitura e modelo do briefing.
+- `bug-report.md` — template, severidade, status e evidência.
+- `recon.md` — checklist por stack.
