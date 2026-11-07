@@ -116,6 +116,30 @@ Testar a árvore de trabalho não prova o que o usuário roda. Quando existir bu
 Sem isso, o QA pode aprovar uma árvore que nunca chega ao usuário — e reprovar um artefato que
 não é o que ele usa.
 
+## Fase 3.7 — Higiene e organização do frontend
+
+Funcionar não é estar bem escrito. Depois do comportamento, audite a **organização** — com régua
+objetiva, não gosto pessoal. Cada achado entra no relatório com arquivo e linha.
+
+1. **Orçamento de arquivo.** Acima de ~400 linhas é sinal, não proibição: aponte o arquivo e diga
+   o que está junto sem precisar (dois assuntos, formulário + tabela, fetch + render).
+2. **`useEffect` com `[]`.** Cada um justifica por que não depende de nada. Efeito que lê URL,
+   prop ou estado e declara `[]` é bug esperando clique (já matou um botão em produção interna).
+3. **Camadas.** `pages` não importa de `pages`; `lib` puro (sem React); **só o cliente HTTP fala
+   HTTP** — nenhum `fetch`/`axios` fora dele; tela não conhece nome de tabela/view do backend.
+4. **TODOs.** Conte e liste: cada `TODO` que depende de contrato inexistente aponta para a seção
+   certa do doc de contrato. TODO órfão há mais de uma entrega vira dívida declarada.
+5. **Tokens.** Nenhum hex solto fora do arquivo de tokens, nenhuma cor proibida pelo guia de
+   marca, nenhum `red-*` quando a identidade não tem vermelho. Cor fora do token é bug de marca.
+6. **Código morto.** Export sem import, arquivo sem ninguém que use, componente duplicado do
+   mesmo padrão, handler que ninguém chama.
+7. **Zero warning.** `tsc`/build sem warning; `console.log` esquecido é achado.
+8. **Lint**: se o projeto tem linter, ele roda e passa; se não tem, registre como lacuna — não
+   invente configuração sem o dono pedir.
+
+Saída: `qa/organizacao.md` (régua, achado, arquivo:linha, risco, sugestão). Não é refactor
+automático: **aponta e deixa o dono decidir**.
+
 ## Fase 4 — Backend/API
 
 Não assuma que a UI funcionando prova o backend.
